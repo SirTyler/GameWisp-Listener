@@ -134,68 +134,68 @@ Streamtip.prototype.loadSocketIO = function() {
 
 //--- ON-DEMAND RESPONSES (see: https://gamewisp.readme.io/docs/on-demand-event-basics)
 
-	socketClient.on('app-channel-connected', function(data, callback){
+	this._socket.on('app-channel-connected', function(data, callback){
 		_self.emit('app-channel-connected', data);
 	});
 
-	socketClient.on('app-channel-subscribers', function(data, callback){
+	this._socket.on('app-channel-subscribers', function(data, callback){
 		_self.emit('app-channel-subscribers', data);
 	});
 
-	socketClient.on('app-channel-tiers', function(data, callback){
+	this._socket.on('app-channel-tiers', function(data, callback){
 		_self.emit('app-channel-tiers', data);
 	});
 
 
 	//--- REAL TIME EVENTS (see: https://gamewisp.readme.io/docs/real-time-events)
 
-	socketClient.on('subscriber-new', function(data, callback){
+	this._socket.on('subscriber-new', function(data, callback){
 		_self.emit('subscriber-new', data);
 	});
 
-	socketClient.on('subscriber-renewed', function(data, callback){
+	this._socket.on('subscriber-renewed', function(data, callback){
 		_self.emit('subscriber-renewed', data);
 	});
 
-	socketClient.on('subscriber-status-change', function(data, callback){
+	this._socket.on('subscriber-status-change', function(data, callback){
 		_self.emit('subscriber-status-change', data);
 	});
 
-	socketClient.on('subscriber-benefits-change', function(data, callback){
+	this._socket.on('subscriber-benefits-change', function(data, callback){
 		_self.emit('subscriber-benefits-change', data);
 	});
 
-	socketClient.on('benefit-fulfilled', function(data, callback){
+	this._socket.on('benefit-fulfilled', function(data, callback){
 		_self.emit('benefit-fulfilled', data);
 	});
 
-	socketClient.on('benefit-dismissed-user', function(data, callback){
+	this._socket.on('benefit-dismissed-user', function(data, callback){
 		_self.emit('benefit-dismissed-user', data);
 	});
 
-	socketClient.on('benefit-dismissed-channel', function(data, callback){
+	this._socket.on('benefit-dismissed-channel', function(data, callback){
 		_self.emit('benefit-dismissed-channel', data);
 	});
 
-	socketClient.on('tier-published', function(data, callback){
+	this._socket.on('tier-published', function(data, callback){
 		_self.emit('tier-published', data);
 	});
 
-	socketClient.on('tier-unpublished', function(data, callback){
+	this._socket.on('tier-unpublished', function(data, callback){
 		_self.emit('tier-unpublished', data);
 	});
 
-	socketClient.on('tier-modified', function(data, callback){
+	this._socket.on('tier-modified', function(data, callback){
 		_self.emit('tier-modified', data); 
 	});
 
-	socketClient.on('tier-benefit-added', function(data, callback){
+	this._socket.on('tier-benefit-added', function(data, callback){
 		_self.emit('tier-benefit-added', data); 
 	});
 
-	socketClient.on('tier-benefit-removed', function(data, callback){
+	this._socket.on('tier-benefit-removed', function(data, callback){
 		_self.emit('tier-benefit-remoed', data); 
 	});
 };
 
-module.exports = Streamtip;
+module.exports = GameWisp;

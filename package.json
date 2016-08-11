@@ -1,6 +1,6 @@
 {
   "name": "gamewisp-listener",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Evented wrapper API for GameWisp",
   "main": "index.js",
   "scripts": {},
@@ -19,12 +19,12 @@
   },
   "dependencies": {
     "body-parser": "latest",
-	"http": "latest",
-	"express": "latest",
-	"events": "latest",
+    "http": "latest",
+    "express": "latest",
+    "events": "latest",
     "socket.io-client": "latest",
-	"simple-oauth2": "latest",
-	"util": "latest"
+    "simple-oauth2": "latest",
+    "util": "latest"
   },
   "homepage": "https://github.com/sirtyler/GameWisp-Listener#readme"
 }
