@@ -39,8 +39,8 @@ GameWisp.prototype.loadSocketIO = function() {
 	//oauth configuration
 	var oAuthInfo = {
 		site: 'https://api.gamewisp.com',
-		clientID: options.clientID,
-		clientSecret: options.clientSecret,
+		clientID: this.options.clientID,
+		clientSecret: this.options.clientSecret,
 		tokenPath: '/pub/v1/oauth/token',
 		authorizationPath: '/pub/v1/oauth/authorize'
 	};
@@ -49,14 +49,14 @@ GameWisp.prototype.loadSocketIO = function() {
 
 	// Authorization Channel uri definition 
 	var authorization_uri = oauth2.authCode.authorizeURL({
-		redirect_uri: options.redirect_uri,
+		redirect_uri: this.options.redirect_uri,
 		scope: 'read_only,user_read',
 		state: 'nodecg'
 	});
 
 	// Authorization Subscriber uri definition 
 	var authorization_uri2 = oauth2.authCode.authorizeURL({
-		redirect_uri: options.redirect_uri,
+		redirect_uri: this.options.redirect_uri,
 		scope: 'user_read',
 		state: 'nodecg'
 	});
@@ -79,11 +79,11 @@ GameWisp.prototype.loadSocketIO = function() {
 	});
 
 	//use this as the redirect_uri for your client credentials.
-	app.get(options.redirect_path, function(req,res){
+	app.get(this.options.redirect_path, function(req,res){
 		var code = req.query.code;
 		var token = oauth2.authCode.getToken({
 			code: code,
-			redirect_uri: (options.redirect_uri)
+			redirect_uri: (this.options.redirect_uri)
 		}).then(function saveToken(result){
 			if(result.error == undefined){
 				token = oauth2.accessToken.create(result);
@@ -99,7 +99,7 @@ GameWisp.prototype.loadSocketIO = function() {
 		});
 	});
 
-	this.io.server.listen(options.nodePort);
+	this.io.server.listen(this.options.nodePort);
 
 	//------ SINGULARITY ------//
 
