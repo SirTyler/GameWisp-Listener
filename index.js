@@ -99,7 +99,7 @@ GameWisp.prototype.loadSocketIO = function() {
 		});
 	});
 
-	this.io.server.listen(this.options.nodePort);
+	server.listen(this.options.nodePort);
 
 	//------ SINGULARITY ------//
 
