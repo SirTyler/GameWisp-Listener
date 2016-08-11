@@ -8,13 +8,13 @@ var io = require('socket.io-client'),
     util = require('util');
 
 /**
- * Streamtip constructor
+ * GameWisp constructor
  *
  * @param {Object} options
  */
 function GameWisp(options) {
     // Makes "new" optional
-    if (!(this instanceof Streamtip)) return new Streamtip(options);
+    if (!(this instanceof GameWisp)) return new GameWisp(options);
     this.options = options;
 
     // Socket.io object
@@ -27,7 +27,7 @@ util.inherits(GameWisp, EventEmitter);
 /**
  * Loads the socket.io client
  */
-Streamtip.prototype.loadSocketIO = function() {
+GameWisp.prototype.loadSocketIO = function() {
     if(this._socket) return;
 
     var _self = this;
