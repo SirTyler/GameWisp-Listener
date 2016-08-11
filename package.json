@@ -19,8 +19,9 @@
   },
   "dependencies": {
     "body-parser": "latest",
-    "socket.io": "latest",
-    "socketio-auth": "latest",
+	"http": "latest",
+	"express": "latest",
+	"events": "latest",
     "socket.io-client": "latest",
 	"simple-oauth2": "latest",
 	"util": "latest"

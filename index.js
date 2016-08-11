@@ -22,7 +22,7 @@ function GameWisp(options) {
     this.loadSocketIO();
 }
 
-util.inherits(Streamtip, EventEmitter);
+util.inherits(GameWisp, EventEmitter);
 
 /**
  * Loads the socket.io client
