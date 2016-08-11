@@ -106,10 +106,10 @@ GameWisp.prototype.loadSocketIO = function() {
 	//--- CONNECTION
 	this._socket.on('connect', function(){  
 		_self.emit('connected');
-		this._socket.emit('authentication', {
-			key: oAuthInfo.clientID, 
-			secret: oAuthInfo.clientSecret,
-		});
+		//this._socket.emit('authentication', {
+		//	key: oAuthInfo.clientID, 
+		//	secret: oAuthInfo.clientSecret,
+		//});
 	});
 
 
