@@ -1,6 +1,6 @@
 {
   "name": "gamewisp-listener",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Evented wrapper API for GameWisp",
   "main": "index.js",
   "scripts": {},
