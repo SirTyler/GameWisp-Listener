@@ -165,6 +165,10 @@ GameWisp.prototype.loadSocketIO = function() {
 	socketClient.on('subscriber-new', function(data, callback){
 		_self.emit('subscriber-new', data);
 	});
+	
+	socketClient.on('subscriber-anniversary', function(data, callback){
+		_self.emit('subscriber-anniversary', data);
+	});
 
 	socketClient.on('subscriber-renewed', function(data, callback){
 		_self.emit('subscriber-renewed', data);
