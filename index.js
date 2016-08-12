@@ -5,6 +5,8 @@ var EventEmitter = require('events').EventEmitter,
     app = require('express')(),
 	server = require('http').Server(app),
     util = require('util');
+	
+var socketClient = require("socket.io-client")('https://singularity.gamewisp.com');
 
 /**
  * GameWisp constructor
@@ -17,7 +19,6 @@ function GameWisp(options) {
     this.options = options;
 
     // Socket.io object
-    this._socket = null;
     this.loadSocketIO();
 }
 
@@ -30,8 +31,6 @@ GameWisp.prototype.loadSocketIO = function() {
     if(this._socket) return;
 
     var _self = this;
-	
-	this._socket = require('socket.io-client')('https://singularity.gamewisp.com');
 	
 	app.use(bodyParser());
 
@@ -99,13 +98,29 @@ GameWisp.prototype.loadSocketIO = function() {
 	});
 
 	server.listen(_self.options.nodePort);
+	
+	var initSocketApiConnectionForChannel = function(accessToken){
+		var data = {   
+			access_token: accessToken,
+		};
+
+		//connect the channels. 
+		console.log('attempting to connect channel with access_token: ' + accessToken);
+		sendSingularityData(data, 'channel-connect');
+	}
+
+
+	//sends data to singularity.
+	var sendSingularityData = function(channelJson, call){
+		socketClient.emit(call, channelJson);
+	};
 
 	//------ SINGULARITY ------//
 
 	//--- CONNECTION
-	this._socket.on('connect', function(){  
+	socketClient.on('connect', function(){  
 		_self.emit('connected');
-		this._socket.emit('authentication', {
+		socketClient.emit('authentication', {
 			key: oAuthInfo.clientID, 
 			secret: oAuthInfo.clientSecret,
 		});
@@ -114,85 +129,85 @@ GameWisp.prototype.loadSocketIO = function() {
 
 	//--- AUTHENTICATION
 	//Fires when your client is successfully authenticated
-	this._socket.on('authenticated', function(data) {
+	socketClient.on('authenticated', function(data) {
 		_self.emit('authenticated');
 	});
 
 	//Fires if there is an error with authentication. Typically bad client credentials. 
-	this._socket.on('unauthorized', function(err){
+	socketClient.on('unauthorized', function(err){
 		_self.emit('authenticationFailed');
 	});
 
-    this._socket.on('connect', function() {
+    socketClient.on('connect', function() {
         _self.emit('connected');
     });
 
-    this._socket.on('authenticated', function() {
+    socketClient.on('authenticated', function() {
         _self.emit('authenticated');
     });
 
 //--- ON-DEMAND RESPONSES (see: https://gamewisp.readme.io/docs/on-demand-event-basics)
 
-	this._socket.on('app-channel-connected', function(data, callback){
+	socketClient.on('app-channel-connected', function(data, callback){
 		_self.emit('app-channel-connected', data);
 	});
 
-	this._socket.on('app-channel-subscribers', function(data, callback){
+	socketClient.on('app-channel-subscribers', function(data, callback){
 		_self.emit('app-channel-subscribers', data);
 	});
 
-	this._socket.on('app-channel-tiers', function(data, callback){
+	socketClient.on('app-channel-tiers', function(data, callback){
 		_self.emit('app-channel-tiers', data);
 	});
 
 
 	//--- REAL TIME EVENTS (see: https://gamewisp.readme.io/docs/real-time-events)
 
-	this._socket.on('subscriber-new', function(data, callback){
+	socketClient.on('subscriber-new', function(data, callback){
 		_self.emit('subscriber-new', data);
 	});
 
-	this._socket.on('subscriber-renewed', function(data, callback){
+	socketClient.on('subscriber-renewed', function(data, callback){
 		_self.emit('subscriber-renewed', data);
 	});
 
-	this._socket.on('subscriber-status-change', function(data, callback){
+	socketClient.on('subscriber-status-change', function(data, callback){
 		_self.emit('subscriber-status-change', data);
 	});
 
-	this._socket.on('subscriber-benefits-change', function(data, callback){
+	socketClient.on('subscriber-benefits-change', function(data, callback){
 		_self.emit('subscriber-benefits-change', data);
 	});
 
-	this._socket.on('benefit-fulfilled', function(data, callback){
+	socketClient.on('benefit-fulfilled', function(data, callback){
 		_self.emit('benefit-fulfilled', data);
 	});
 
-	this._socket.on('benefit-dismissed-user', function(data, callback){
+	socketClient.on('benefit-dismissed-user', function(data, callback){
 		_self.emit('benefit-dismissed-user', data);
 	});
 
-	this._socket.on('benefit-dismissed-channel', function(data, callback){
+	socketClient.on('benefit-dismissed-channel', function(data, callback){
 		_self.emit('benefit-dismissed-channel', data);
 	});
 
-	this._socket.on('tier-published', function(data, callback){
+	socketClient.on('tier-published', function(data, callback){
 		_self.emit('tier-published', data);
 	});
 
-	this._socket.on('tier-unpublished', function(data, callback){
+	socketClient.on('tier-unpublished', function(data, callback){
 		_self.emit('tier-unpublished', data);
 	});
 
-	this._socket.on('tier-modified', function(data, callback){
+	socketClient.on('tier-modified', function(data, callback){
 		_self.emit('tier-modified', data); 
 	});
 
-	this._socket.on('tier-benefit-added', function(data, callback){
+	socketClient.on('tier-benefit-added', function(data, callback){
 		_self.emit('tier-benefit-added', data); 
 	});
 
-	this._socket.on('tier-benefit-removed', function(data, callback){
+	socketClient.on('tier-benefit-removed', function(data, callback){
 		_self.emit('tier-benefit-remoed', data); 
 	});
 };
