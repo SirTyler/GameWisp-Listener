@@ -84,9 +84,9 @@ GameWisp.prototype.loadSocketIO = function() {
 			redirect_uri: (_self.options.redirect_uri)
 		}).then(function saveToken(result){
 			if(result.error == undefined){
-				token = oauth2.accessToken.create(result);
-				var accessToken = token.token.access_token;
-				_self.emit('channel-connect', token.token);
+                token = oauth2.accessToken.create(result);
+                var accessToken = token.token.access_token;
+                initSocketApiConnectionForChannel(token.token.access_token);
 				
 				res.send('<h1>You got a token object from GameWisp. Here is the auth token:' + token.token.access_token);
 			} else {
@@ -105,7 +105,6 @@ GameWisp.prototype.loadSocketIO = function() {
 		};
 
 		//connect the channels. 
-		console.log('attempting to connect channel with access_token: ' + accessToken);
 		sendSingularityData(data, 'channel-connect');
 	}
 
