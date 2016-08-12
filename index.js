@@ -1,8 +1,7 @@
 'use strict';
 var bodyParser = require('body-parser');
 
-var io = require('socket.io-client'),
-    EventEmitter = require('events').EventEmitter,
+var EventEmitter = require('events').EventEmitter,
     app = require('express')(),
 	server = require('http').Server(app),
     util = require('util');
@@ -32,7 +31,7 @@ GameWisp.prototype.loadSocketIO = function() {
 
     var _self = this;
 	
-	this._socket = io.connect('https://singularity.gamewisp.com');
+	this._socket = require('socket.io-client')('https://singularity.gamewisp.com');
 	
 	app.use(bodyParser());
 
@@ -106,10 +105,10 @@ GameWisp.prototype.loadSocketIO = function() {
 	//--- CONNECTION
 	this._socket.on('connect', function(){  
 		_self.emit('connected');
-		//this._socket.emit('authentication', {
-		//	key: oAuthInfo.clientID, 
-		//	secret: oAuthInfo.clientSecret,
-		//});
+		this._socket.emit('authentication', {
+			key: oAuthInfo.clientID, 
+			secret: oAuthInfo.clientSecret,
+		});
 	});
 
 
