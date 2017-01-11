@@ -36,24 +36,28 @@ GameWisp.prototype.loadSocketIO = function() {
 
 	//oauth configuration
 	var oAuthInfo = {
-		site: 'https://api.gamewisp.com',
-		clientID: _self.options.clientID,
-		clientSecret: _self.options.clientSecret,
-		tokenPath: '/pub/v1/oauth/token',
-		authorizationPath: '/pub/v1/oauth/authorize'
+		client: {
+			id: _self.options.clientID,
+			secret: _self.options.clientSecret
+		},
+		auth: {
+			tokenHost: 'https://api.gamewisp.com',
+			tokenPath: '/pub/v1/oauth/token',
+			authorizePath: '/pub/v1/oauth/authorize'
+		}
 	};
 
-	var oauth2 = require('simple-oauth2')(oAuthInfo);
+	var oauth2 = require('simple-oauth2').create(oAuthInfo);
 
 	// Authorization Channel uri definition 
-	var authorization_uri = oauth2.authCode.authorizeURL({
+	var authorization_uri = oauth2.authorizationCode.authorizeURL({
 		redirect_uri: _self.options.redirect_uri,
 		scope: 'read_only,user_read',
 		state: 'nodecg'
 	});
 
 	// Authorization Subscriber uri definition 
-	var authorization_uri2 = oauth2.authCode.authorizeURL({
+	var authorization_uri2 = oauth2.authorizationCode.authorizeURL({
 		redirect_uri: _self.options.redirect_uri,
 		scope: 'user_read',
 		state: 'nodecg'
@@ -79,7 +83,7 @@ GameWisp.prototype.loadSocketIO = function() {
 	//use this as the redirect_uri for your client credentials.
 	app.get(_self.options.redirect_path, function(req,res){
 		var code = req.query.code;
-		var token = oauth2.authCode.getToken({
+		var token = oauth2.authorizationCode.getToken({
 			code: code,
 			redirect_uri: (_self.options.redirect_uri)
 		}).then(function saveToken(result){
